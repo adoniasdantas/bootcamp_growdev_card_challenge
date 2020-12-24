@@ -88,6 +88,7 @@ class _CreateCardPageState extends State<CreateCardPage> {
                         decoration: InputDecoration(
                           hintText: 'Título',
                           enabledBorder: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value.isEmpty) {
@@ -103,10 +104,15 @@ class _CreateCardPageState extends State<CreateCardPage> {
                         height: 30,
                       ),
                       TextFormField(
+                        maxLines: 10,
                         initialValue: card?.content != null
                             ? card?.content.toString()
                             : '',
-                        decoration: InputDecoration(hintText: 'Content', enabledBorder: OutlineInputBorder()),
+                        decoration: InputDecoration(
+                          hintText: 'Content',
+                          enabledBorder: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(),
+                        ),
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'This field is required';
