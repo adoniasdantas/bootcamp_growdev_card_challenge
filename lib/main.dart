@@ -4,6 +4,7 @@ import 'package:projeto_2_cards/pages/cards_page.dart';
 import 'package:projeto_2_cards/pages/create_card_page.dart';
 import 'package:projeto_2_cards/pages/login_page.dart';
 import 'package:projeto_2_cards/routes/routes.dart';
+import 'package:projeto_2_cards/theme/app_theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,10 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: appTheme(),
+      debugShowCheckedModeBanner: false,
       initialRoute: AppBloc.user == null ? Routes.LOGIN : Routes.CARDS_PAGE,
       routes: {
         Routes.LOGIN: (context) => LoginPage(),

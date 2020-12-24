@@ -17,7 +17,7 @@ class _CardsPageState extends State<CardsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     getCards = cardsService.buscarTodosCards();
   }
 
@@ -101,12 +101,13 @@ class _CardsPageState extends State<CardsPage> {
               if (!snapshot.hasData) {
                 print('nao tem data');
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: Text('Não há cartões salvos'),
                 );
               } else if (snapshot.hasError) {
                 print('tem erro');
-
-                return Center(child: Text("${snapshot.error}"));
+                return Center(
+                  child: Text(snapshot.error),
+                );
               }
               cards = snapshot.data;
               cards.forEach((element) {
@@ -116,29 +117,111 @@ class _CardsPageState extends State<CardsPage> {
                 itemCount: cards.length,
                 itemBuilder: (context, index) {
                   var card = cards[index];
-                  return ListTile(
-                    leading: Icon(Icons.supervised_user_circle),
-                    title: Text(card.title ?? ''),
-                    onTap: () async {
-                      var cardUpdated = await Navigator.of(context).pushNamed(
-                        Routes.CREATE_CARD_PAGE,
-                        arguments: card,
-                      );
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    margin: EdgeInsets.only(bottom: 15),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).accentColor,
+                        width: 3,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.black, width: 2),
+                                borderRadius: BorderRadius.circular(60),
+                                color: Theme.of(context).accentColor,
+                              ),
+                              child: Text(
+                                card.id.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Text(
+                                card.title,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Divider(
+                          height: 20,
+                          color: Colors.grey,
+                          thickness: 2,
+                        ),
+                        Text(
+                          card.content,
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                          maxLines: 4,
+                          overflow: TextOverflow.fade,
+                          textAlign: TextAlign.justify,
+                        ),
+                        ButtonBar(
+                          alignment: MainAxisAlignment.start,
+                          children: [
+                            FlatButton(
+                              child: Text(
+                                'Editar',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 14),
+                              ),
+                              onPressed: () async {
+                                var cardUpdated =
+                                    await Navigator.of(context).pushNamed(
+                                  Routes.CREATE_CARD_PAGE,
+                                  arguments: card,
+                                );
 
-                      if (cardUpdated != null) {
-                        setState(() {
-                          card = cardUpdated;
-                        });
-                      }
-                    },
-                    onLongPress: () async {
-                      var deleted = await cardsService.delete(card);
-                      if (deleted) {
-                        setState(() {
-                          cards.remove(card);
-                        });
-                      }
-                    },
+                                if (cardUpdated != null) {
+                                  setState(() {
+                                    card = cardUpdated;
+                                  });
+                                }
+                              },
+                              splashColor: Theme.of(context).accentColor,
+                            ),
+                            RaisedButton(
+                              child: Text(
+                                'Deletar',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 14),
+                              ),
+                              onPressed: () async {
+                                var deleted = await cardsService.delete(card);
+                                if (deleted) {
+                                  setState(() {
+                                    cards.remove(card);
+                                  });
+                                }
+                              },
+                              splashColor: Colors.red,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   );
                 },
               );

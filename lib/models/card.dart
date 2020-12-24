@@ -18,7 +18,6 @@ class Cartao {
 
   @override
   String toString() {
-    // TODO: implement toString
-    return 'id: ${id} ... title: ${title} ... content: ${content}';
+    return 'id: $id ... title: $title ... content: $content';
   }
 }

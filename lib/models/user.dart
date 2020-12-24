@@ -14,8 +14,7 @@ class User {
         token = json['token'];
 
   @override
-  String toString() {
-    // TODO: implement toString
+  String toString() {  
     return 'Usuário: $name, Email $email, Token $token';
   }
 }
